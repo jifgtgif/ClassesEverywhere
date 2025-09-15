@@ -1,0 +1,42 @@
+Thing/Animal = {
+    string name = "Unknown";
+    
+    function new() {
+        print("Animal created");
+    }
+    
+    function speak() {
+        print(name, "makes a sound");
+    }
+    
+    function info() {
+        print("This is", name);
+    }
+}
+
+Thing/Animal/Dog = {
+    string breed = "Mixed";
+    
+    function new() {
+        ..();  // Call parent constructor
+        print("Dog created");
+    }
+    
+    function speak() {
+        ..();  // Call parent speak method
+        print(name, "barks!");
+    }
+    
+    function info() {
+        ..();  // Call parent info method
+        print("Breed:", breed);
+    }
+}
+
+on Events.start {
+    dog = new("Thing/Animal/Dog");
+    dog.name = "Buddy";
+    dog.breed = "Golden Retriever";
+    dog.speak();
+    dog.info();
+}

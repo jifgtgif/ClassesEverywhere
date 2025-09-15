@@ -1,0 +1,47 @@
+Thing/A = {
+    int x = 10;
+
+    function new() {
+        print("A's x =", x);
+    }
+}
+
+Thing/A/B = {
+    int y = 5;
+
+    function new() {
+        print("B's x =", x);
+        print("B's y =", y);
+    }
+    function printValDoubleSum() {
+        print("B's x+y =", (x+y)*2);
+    }
+}
+
+Thing/FizzBuzz = {
+    int counter = 0;
+    string result = "";
+    function getNum(num) {
+        result = "";
+        if (num%3==0) {
+            result &= "Fizz";
+        } elseif (num%5==0) {
+            result &= "Buzz";
+        }
+        if (result != "") {
+            return result;
+        }
+        return num;
+    }
+    function new() {
+        for (i=0;i<10;i++) {
+            print(getNum(i));
+        }
+    }
+}
+
+on Events.start {
+    objB = new("Thing/A/B");
+    objFizz = new("Thing/FizzBuzz");
+    objB.printValDoubleSum();
+}

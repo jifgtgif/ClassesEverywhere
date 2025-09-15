@@ -1,0 +1,57 @@
+Thing/Event = {
+    string eventName = "BaseEvent";
+    
+    function Fire() {
+        print("Firing event:", eventName);
+        Fire(eventName);
+    }
+}
+
+Thing/Event/PlayerDied = {
+    int score = 0;
+    
+    function Fire() {
+        eventName = "Thing/Event/PlayerDied";
+        ..();  // Call parent Fire method
+    }
+}
+
+Thing/Event/LevelComplete = {
+    int level = 1;
+    
+    function Fire() {
+        eventName = "Thing/Event/LevelComplete";
+        ..();  // Call parent Fire method
+    }
+}
+
+Thing/Game = {
+    int playerScore = 100;
+    int currentLevel = 1;
+    
+    function playerDies() {
+        deathEvent = new("Thing/Event/PlayerDied");
+        deathEvent.score = playerScore;
+        deathEvent.Fire();
+    }
+    
+    function completeLevel() {
+        completeEvent = new("Thing/Event/LevelComplete");
+        completeEvent.level = currentLevel;
+        completeEvent.Fire();
+    }
+}
+
+on Thing/Event/PlayerDied {
+    print("Game Over! Final score was saved.");
+}
+
+on Thing/Event/LevelComplete {
+    print("Congratulations! Moving to next level.");
+}
+
+on Events.start {
+    game = new("Thing/Game");
+    game.completeLevel();
+    game.playerDies();
+}

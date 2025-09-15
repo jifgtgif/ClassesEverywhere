@@ -1,0 +1,176 @@
+Thing/Shape = {
+    int x = 0;
+    int y = 0;
+    string color = "white";
+    
+    function new() {
+        print("Shape created");
+    }
+    
+    function draw() {
+        print("Drawing basic shape");
+    }
+    
+    function move(newX, newY) {
+        x = newX;
+        y = newY;
+        print("Shape moved to", x, y);
+    }
+}
+
+Thing/Shape/Rectangle = {
+    int width = 10;
+    int height = 5;
+    
+    function new() {
+        ..();  // Call parent constructor
+        print("Rectangle created");
+    }
+    
+    function draw() {
+        print("Drawing rectangle at", x, y, "size", width, "x", height);
+        // Set color based on shape color
+        if (color == "red") {
+            SetColor(255, 0, 0);
+        } elseif (color == "green") {
+            SetColor(0, 255, 0);
+        } else {
+            SetColor(255, 255, 255);
+        }
+        
+        // Draw the rectangle
+        for (i = 0; i < width; i++) {
+            for (j = 0; j < height; j++) {
+                DrawPixel(x + i, y + j);
+            }
+        }
+    }
+}
+
+Thing/Event = {
+    string name = "Event";
+    
+    function Fire() {
+        print("Event fired:", name);
+        Fire(name);
+    }
+}
+
+Thing/Event/ShapeDrawn = {
+    function Fire() {
+        name = "Thing/Event/ShapeDrawn";
+        ..();  // Call parent Fire method
+    }
+}
+
+Thing/Scene = {
+    int num = 0;
+    function drawAll() {
+        
+        num = num + 0.01;
+        print(num);
+        ClearCanvas();   
+        // Create and draw multiple rectangles
+        rect1 = new("Thing/Shape/Rectangle");
+        rect1.x = 100+cos(num*10)*100;
+        rect1.y = 200;
+        rect1.width = 50;
+        rect1.height = 50;
+        rect1.color = "red";
+        rect1.draw();
+        
+        rect2 = new("Thing/Shape/Rectangle");
+        rect2.x = mousex();
+        rect2.y = mousey();
+        rect2.width = 15;
+        rect2.height = 4;
+        rect2.color = "green";
+        rect2.draw();
+        
+        // Fire event
+        event = new("Thing/Event/ShapeDrawn");
+        event.Fire();
+        
+        ShowCanvas();
+    }
+}
+
+on Thing/Event/ShapeDrawn {
+    print("All shapes have been drawn!");
+}
+Thing/Shape/Circle = {
+    int radius = 20;
+
+    function new() {
+        ..();  // Call Shape constructor
+        print("Circle created");
+    }
+
+    function draw() {
+        print("Drawing circle at", x, y, "radius", radius);
+
+        if (color == "blue") {
+            SetColor(0, 0, 255);
+        } else {
+            SetColor(200, 200, 200);
+        }
+
+        // Basic circle drawing (naive pixel plotting)
+        for (i = -radius; i < radius; i++) {
+            for (j = -radius; j < radius; j++) {
+                if (i*i + j*j <= radius*radius) {
+                    DrawPixel(x + i, y + j);
+                }
+            }
+        }
+    }
+}
+
+Thing/Event/CircleDrawn = {
+    function Fire() {
+        name = "Thing/Event/CircleDrawn";
+        ..();  // Call parent Fire
+    }
+}
+
+Thing/CircleScene = {
+    int tick = 0;
+
+    function drawAll() {
+        ClearCanvas();
+
+        tick = tick + 1;
+
+        circ = new("Thing/Shape/Circle");
+        circ.x = 200 + cos(tick * 0.05) * 100;
+        circ.y = 200 + sin(tick * 0.05) * 100;
+        circ.radius = 40;
+        circ.color = "blue";
+        circ.draw();
+
+        // Fire circle event
+        evt = new("Thing/Event/CircleDrawn");
+        evt.Fire();
+
+        ShowCanvas();
+    }
+}
+
+on Thing/Event/CircleDrawn {
+    print("A circle was drawn!");
+}
+
+on Events.start {
+    print("=== Classes Everywhere Demo ===");
+    print("Demonstrating: inheritance, overriding, super calls, field assignment, drawing, and custom events");
+    print("");
+    print("=== Circle Demo ===");
+    print("This demo shows inheritance, overriding, and events again!");
+    scene2 = new("Thing/CircleScene");
+    scene = new("Thing/Scene");
+}
+
+on Events.draw {
+    scene.drawAll();
+    scene2.drawAll();
+}

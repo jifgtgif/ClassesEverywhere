@@ -1,0 +1,14 @@
+Thing/Test = {
+    string name = "Default";
+    
+    function showName() {
+        print("Name is:", name);
+    }
+}
+
+on Events.start {
+    test = new("Thing/Test");
+    test.showName();
+    test.name = "Changed";
+    test.showName();
+}

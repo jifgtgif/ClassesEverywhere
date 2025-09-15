@@ -1,0 +1,24 @@
+Thing/A = {
+    int x = 10;
+
+    function new() {
+        print("A's x =", x);
+    }
+}
+
+Thing/A/B = {
+    int y = 5;
+
+    function new() {
+        print("B's x =", x);
+        print("B's y =", y);
+    }
+    function printValDoubleSum() {
+        print("B's x+y =", (x+y)*2);
+    }
+}
+
+on Events.start {
+    obj = new("Thing/A/B");
+    obj.printValDoubleSum();
+}

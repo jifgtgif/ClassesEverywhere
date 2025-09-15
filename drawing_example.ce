@@ -1,0 +1,45 @@
+Thing/Graphics = {
+    function drawLine(x1, y1, x2, y2) {
+        // Simple line drawing using Bresenham's algorithm (simplified)
+        dx = x2 - x1;
+        dy = y2 - y1;
+        steps = dx;
+        if (dy > dx) {
+            steps = dy;
+        }
+        
+        for (i = 0; i <= steps; i++) {
+            x = x1 + (dx * i) / steps;
+            y = y1 + (dy * i) / steps;
+            DrawPixel(x, y);
+        }
+    }
+    
+    function drawBox(x, y, width, height) {
+        // Draw the four sides of a box
+        for (i = 0; i < width; i++) {
+            DrawPixel(x + i, y);           // Top side
+            DrawPixel(x + i, y + height - 1); // Bottom side
+        }
+        for (i = 0; i < height; i++) {
+            DrawPixel(x, y + i);           // Left side
+            DrawPixel(x + width - 1, y + i); // Right side
+        }
+    }
+}
+
+on Events.start {
+    ClearCanvas();
+    graphics = new("Thing/Graphics");
+    
+    SetColor(255, 255, 255);  // White
+    graphics.drawBox(10, 5, 20, 10);
+    
+    SetColor(200, 200, 200);  // Light gray
+    graphics.drawLine(5, 5, 35, 15);
+    
+    SetColor(100, 100, 100);  // Dark gray
+    graphics.drawLine(5, 15, 35, 5);
+    
+    ShowCanvas();
+}

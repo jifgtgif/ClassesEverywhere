@@ -1,0 +1,115 @@
+// Classes Everywhere Extension Test File
+// This file demonstrates all the language features for testing the VS Code extension
+
+Thing/Animal = {
+    string name = "Unknown";
+    int age = 0;
+    
+    function new() {
+        print("Animal created:", name);
+    }
+    
+    function speak() {
+        print(name, "makes a sound");
+    }
+    
+    function info() {
+        print("Name:", name, "Age:", age);
+    }
+}
+
+Thing/Animal/Dog = {
+    string breed = "Mixed";
+    
+    function new() {
+        ..(); // Super call - should have hover info and autocompletion
+        print("Dog created");
+    }
+    
+    function speak() {
+        ..(); // Call parent method
+        print(name, "barks loudly!");
+    }
+    
+    function fetch() {
+        print(name, "is fetching the ball");
+    }
+}
+
+Thing/Graphics/Canvas = {
+    int width = 80;
+    int height = 25;
+    
+    function drawBox(x, y, w, h) {
+        SetColor(255, 255, 255); // Built-in function
+        for (i = 0; i < w; i++) {
+            for (j = 0; j < h; j++) {
+                DrawPixel(x + i, y + j); // Another built-in
+            }
+        }
+    }
+    
+    function clear() {
+        ClearCanvas();
+    }
+    
+    function show() {
+        ShowCanvas();
+    }
+}
+
+Thing/Event = {
+    string eventName = "BaseEvent";
+    
+    function Fire() {
+        print("Firing event:", eventName);
+        Fire(eventName); // Built-in Fire function
+    }
+}
+
+Thing/Event/GameStart = {
+    int playerCount = 1;
+    
+    function Fire() {
+        eventName = "Thing/Event/GameStart";
+        ..(); // Super call
+    }
+}
+
+// Event handlers
+on Events.start {
+    print("=== Classes Everywhere Extension Test ===");
+    
+    // Test object creation and method calls
+    dog = new("Thing/Animal/Dog");
+    dog.name = "Buddy";
+    dog.age = 3;
+    dog.breed = "Golden Retriever";
+    
+    dog.speak();
+    dog.info();
+    dog.fetch();
+    
+    // Test drawing
+    canvas = new("Thing/Graphics/Canvas");
+    canvas.clear();
+    canvas.drawBox(10, 5, 15, 8);
+    canvas.show();
+    
+    // Test custom events
+    gameEvent = new("Thing/Event/GameStart");
+    gameEvent.playerCount = 2;
+    gameEvent.Fire();
+}
+
+on Thing/Event/GameStart {
+    print("Game is starting with players!");
+}
+
+// This file should demonstrate:
+// - Syntax highlighting for all constructs
+// - IntelliSense for keywords, functions, and class paths
+// - Hover information for built-ins
+// - Code snippets when typing prefixes
+// - Proper indentation and formatting
+// - F5 to run the file
